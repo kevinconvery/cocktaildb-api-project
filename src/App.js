@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from './components/Modal/Modal'
 import ResultsDisplay from './components/ResultsDisplay/ResultsDisplay'
+import SearchForm from './components/SearchForm/SearchForm'
 import './App.css';
 
 function App() {
@@ -68,17 +69,11 @@ function App() {
         This app uses <a href="https://www.thecocktaildb.com/api.php">TheCocktailDB</a> to search up data on cocktails. Purely for fun and enjoyment.
       </div>
       <div className="container">
-        <form onSubmit={handleSubmit} className="cocktail-search-form" >
-          <label htmlFor="search-field" className="search-field-label">
-            Search for
-          </label>
-          <input 
-            type="text" 
-            className="search-field"
-            value={searchField}
-            onChange={(e => setSearchField(e.target.value))} 
-          />
-        </form>
+        <SearchForm 
+          submitForm={handleSubmit}
+          setSearchField={setSearchField}
+          searchField={searchField}
+        />
         <ResultsDisplay 
           select={selectDrink}
           results={searchResults}

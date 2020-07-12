@@ -1,0 +1,15 @@
+.cocktail-search-form {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+  margin-left: .5rem;
+  padding: 1rem 1.5rem;
+  max-width: 30vw;
+  max-height: 70vh;
+  height: 100%;
+  border: 2px solid black;
+}
+
+.cocktail-search-form .search-field-label {
+  margin-right: 1rem;
+}

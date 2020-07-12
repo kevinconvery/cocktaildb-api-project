@@ -15,7 +15,7 @@ const Modal = props => {
       <span className="cocktail-subtitle">Ingredients</span>
       <ul className="ingredients-list">
         {ingredients.map((item) => (
-          <li>{item.name} -- {item.measure}</li>        
+          <li key={item.name}>{item.name} -- {item.measure}</li>        
         ))}
       </ul>
       Serving Glass: {servingGlass}
