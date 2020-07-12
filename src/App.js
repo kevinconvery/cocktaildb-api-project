@@ -4,6 +4,8 @@ import './App.css';
 function App() {
   const [searchField, setSearchField] = useState("")
   const [searchResults, setSearchResults] = useState("")
+  const [modalData, setModalData] = useState("")
+  const [modalVisible, setModalVisible] = useState(false)
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -45,6 +47,21 @@ function App() {
     setSearchField('')
   }
 
+  const handleButtonClick = e => {
+    setModalData('')
+    console.log('click click')
+    const specificDrink = searchResults.filter((drink) => {
+      return drink.title === e.target.name
+    })
+    setModalData(specificDrink)
+    setModalVisible(true)
+    console.log(`modal data: ${modalData}`)
+  }
+
+  const hideModal = () => {
+    setModalVisible(false)
+  }
+
   return (
     <div className="App">
       <header className="main-header">
@@ -71,12 +88,29 @@ function App() {
           {searchResults && searchResults.map(result => (
             <li className="search-result" key={result.title}>
               <img src={result.thumbnail} className="drink-image-thumbnail"  alt={result.title} />
-              <button>{result.title}</button>
+              <button 
+                className="search-result-button"
+                onClick={handleButtonClick}
+                name={result.title}
+              >
+                {result.title}
+              </button>
             </li>
           ))}
         </ul>
       </div>
-      <div class="main-footer">
+      {(modalData && modalVisible) && (
+        <div className="modal-container">
+          <div className="modal-data">
+          <h1 className="cocktail-title">{modalData[0].title}</h1>
+          <img src={modalData[0].thumbnail} className="modal-display-image" alt={modalData[0].title} />
+          <h2>Instructions</h2>
+          <p>{modalData[0].instructions}</p>
+          <button onClick={hideModal} className="hide-modal-button">Close</button>
+          </div>
+        </div>
+      )}
+      <div className="main-footer">
         Kevin Convery - 2020
       </div>
     </div>

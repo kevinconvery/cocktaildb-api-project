@@ -102,3 +102,45 @@ body {
   padding: 5px 10px;
   border-radius: 10px;
 }
+
+.modal-container {
+  position: fixed;
+  bottom: 0;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-data {
+  background: red;
+  width: 600px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cocktail-title {
+  font-size: 2em;
+}
+
+.hide-modal-button {
+  display: flex;
+  justify-self: center;
+  align-self: center;
+  margin: .5rem 0;
+  padding: .5rem 1rem;
+  border: 0;
+  background: #3c336e;
+  color: #ffffff;
+}
+
+.modal-display-image {
+  height: 200px;
+  width: 200px;
+}
