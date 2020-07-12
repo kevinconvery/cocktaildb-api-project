@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+body {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.2em;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 90vw;
+  flex-grow: 1;
+  margin: 0 auto;
+}
+
+.container-header {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.container-header a {
+  text-decoration: none;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.main-header, .main-footer {
+  background: #100c26;
+  color: white;
+  padding: 1rem 2rem;
+}
+
+.main-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.cocktail-search-form {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+  margin-left: .5rem;
+  padding: 1rem 1.5rem;
+  max-width: 30vw;
+  max-height: 70vh;
+  height: 100%;
+  border: 2px solid black;
+}
+
+.cocktail-search-form .search-field-label {
+  margin-right: 1rem;
+}
+
+.drink-image-thumbnail {
+  height: 100px;
+  width: 100px;
+}
+
+.search-results {
+  margin: 2rem auto 2rem;
+  padding: .5rem 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.search-results ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 60vw;
+}
+
+.search-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+  margin-right: .5rem;
+  width: 150px;
+}
+
+.search-result button {
+  margin-top: .5rem;
+  justify-content: center;
+  border: none;
+  font-family: 'Roboto', sans-serif;
+  background-color: #100c26;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
