@@ -1,0 +1,41 @@
+.drink-image-thumbnail {
+  height: 100px;
+  width: 100px;
+}
+
+.search-results {
+  margin: 2rem auto 2rem;
+  padding: .5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-results ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 60vw;
+}
+
+.search-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+  margin-right: .5rem;
+  width: 150px;
+}
+
+.search-result button {
+  margin-top: .5rem;
+  justify-content: center;
+  border: none;
+  font-family: 'Roboto', sans-serif;
+  background-color: #100c26;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+}

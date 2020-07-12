@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Modal from './components/Modal/Modal'
+import ResultsDisplay from './components/ResultsDisplay/ResultsDisplay'
 import './App.css';
 
 function App() {
@@ -78,22 +79,10 @@ function App() {
             onChange={(e => setSearchField(e.target.value))} 
           />
         </form>
-        <div className="search-results">
-          <ul>
-            {searchResults && searchResults.map(result => (
-              <li className="search-result" key={result.title}>
-                <img src={result.thumbnail} className="drink-image-thumbnail"  alt={result.title} />
-                <button 
-                  className="search-result-button"
-                  onClick={selectDrink}
-                  name={result.title}
-                >
-                  {result.title}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ResultsDisplay 
+          select={selectDrink}
+          results={searchResults}
+        />
       </div>
       {(modalData && modalVisible) && (
         <Modal 
