@@ -1,0 +1,61 @@
+.modal-container {
+  position: fixed;
+  bottom: 0;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-data {
+  background: #484079;
+  color: white;
+  width: 600px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cocktail-title {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.cocktail-subtitle {
+  font-size: 1.5em;
+  font-weight: 500;
+}
+
+.hide-modal-button {
+  display: flex;
+  justify-self: center;
+  align-self: center;
+  margin: .5rem 0;
+  padding: .5rem 1rem;
+  border: 0;
+  background: #3c336e;
+  color: #ffffff;
+}
+
+.modal-display-image {
+  height: 120px;
+  width: 120px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.ingredients-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.ingredients-list li {
+  margin-top: .2rem;
+  margin-bottom: .2rem;
+}

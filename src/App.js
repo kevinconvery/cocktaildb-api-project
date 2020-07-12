@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Modal from './components/Modal/Modal'
 import './App.css';
 
 function App() {
@@ -10,7 +11,8 @@ function App() {
   const handleSubmit = async e => {
     e.preventDefault()
     setSearchResults('')
-    const response = searchField && await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchField}`)
+    const endpoint = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchField}`
+    const response = searchField && await fetch(endpoint)
     const data = response && await response.json()
     const { drinks } = data
     if (drinks) {
@@ -37,7 +39,7 @@ function App() {
         return {
           title: strDrink,
           instructions: strInstructions,
-          serving_glass: strGlass,
+          servingGlass: strGlass,
           ingredients: drinkIngredients,
           thumbnail: strDrinkThumb
         }
@@ -47,19 +49,13 @@ function App() {
     setSearchField('')
   }
 
-  const handleButtonClick = e => {
+  const selectDrink = e => {
     setModalData('')
-    console.log('click click')
     const specificDrink = searchResults.filter((drink) => {
       return drink.title === e.target.name
     })
     setModalData(specificDrink)
     setModalVisible(true)
-    console.log(`modal data: ${modalData}`)
-  }
-
-  const hideModal = () => {
-    setModalVisible(false)
   }
 
   return (
@@ -82,33 +78,28 @@ function App() {
             onChange={(e => setSearchField(e.target.value))} 
           />
         </form>
-      </div>
-      <div className="search-results">
-        <ul>
-          {searchResults && searchResults.map(result => (
-            <li className="search-result" key={result.title}>
-              <img src={result.thumbnail} className="drink-image-thumbnail"  alt={result.title} />
-              <button 
-                className="search-result-button"
-                onClick={handleButtonClick}
-                name={result.title}
-              >
-                {result.title}
-              </button>
-            </li>
-          ))}
-        </ul>
+        <div className="search-results">
+          <ul>
+            {searchResults && searchResults.map(result => (
+              <li className="search-result" key={result.title}>
+                <img src={result.thumbnail} className="drink-image-thumbnail"  alt={result.title} />
+                <button 
+                  className="search-result-button"
+                  onClick={selectDrink}
+                  name={result.title}
+                >
+                  {result.title}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
       {(modalData && modalVisible) && (
-        <div className="modal-container">
-          <div className="modal-data">
-          <h1 className="cocktail-title">{modalData[0].title}</h1>
-          <img src={modalData[0].thumbnail} className="modal-display-image" alt={modalData[0].title} />
-          <h2>Instructions</h2>
-          <p>{modalData[0].instructions}</p>
-          <button onClick={hideModal} className="hide-modal-button">Close</button>
-          </div>
-        </div>
+        <Modal 
+          data={modalData[0]}
+          closeModal={() => setModalVisible(false)}
+        />
       )}
       <div className="main-footer">
         Kevin Convery - 2020
