@@ -13,7 +13,7 @@ body {
   flex-direction: column;
   align-items: center;
   max-width: 90vw;
-  min-height: 78.5vh;
+  min-height: 85vh;
   flex-grow: 1;
   margin: 0 auto;
 }
@@ -40,9 +40,24 @@ body {
 
 .main-footer {
   min-height: 10px;
+  display: flex;
   justify-content: center;
+  align-items: center;
+  padding: 10px;
 }
 
+.main-footer span {
+  margin-right: 5px;
+}
+
+.main-footer a {
+  text-decoration: none;
+  color: white;
+}
+
+.main-footer a:hover {
+  color: #858282;
+}
 
 
 

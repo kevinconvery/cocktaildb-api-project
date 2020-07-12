@@ -9,35 +9,38 @@ function App() {
   const [searchResults, setSearchResults] = useState("")
   const [modalData, setModalData] = useState("")
   const [modalVisible, setModalVisible] = useState(false)
+  const [alcoholType, setAlcoholType] = useState("")
 
-  const handleSubmit = async e => {
-    e.preventDefault()
-    setSearchResults('')
-    const endpoint = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchField}`
-    const response = searchField && await fetch(endpoint)
+  const fetchData = async search => {
+    const endpoint = search && `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${search}`
+    const response = search && await fetch(endpoint)
     const data = response && await response.json()
-    const { drinks } = data
-    if (drinks) {
-      const myDrinks = drinks.map((drink) => {
-        const { strDrink, strInstructions, strGlass, strDrinkThumb } = drink
-        const drinkIngredients = []
-        const ingredientPrefix = `strIngredient`
-        const measurePrefix = `strMeasure`
-        let ingredientKey
-        let measureKey
-        for (let i = 1; i <= 15; i++) {
-          ingredientKey = `${ingredientPrefix}${i}`
-          measureKey = `${measurePrefix}${i}`
-          if (drink[ingredientKey]) {
-            drinkIngredients.push({
-              name: drink[ingredientKey],
-              measure: drink[measureKey] ? drink[measureKey] : ''
-            })
-            continue
-          } else {
-            break
-          }
+    return new Promise((resolve, reject) => {
+      data ? resolve(data) : reject('Error')
+    })  
+  }
+
+  const buildSearchData = async data => {
+    const drinks = data.map((drink) => {
+      const { strDrink, strInstructions, strGlass, strDrinkThumb } = drink
+      const drinkIngredients = []
+      const ingredientPrefix = `strIngredient`
+      const measurePrefix = `strMeasure`
+      let ingredientKey
+      let measureKey
+      for (let i = 1; i <= 15; i++) {
+        ingredientKey = `${ingredientPrefix}${i}`
+        measureKey = `${measurePrefix}${i}`
+        if (drink[ingredientKey]) {
+          drinkIngredients.push({
+            name: drink[ingredientKey],
+            measure: drink[measureKey] ? drink[measureKey] : ''
+          })
+          continue
+        } else {
+          break
         }
+      }
         return {
           title: strDrink,
           instructions: strInstructions,
@@ -46,8 +49,17 @@ function App() {
           thumbnail: strDrinkThumb
         }
       })
-      setSearchResults(myDrinks)
-    }
+    return new Promise((resolve, reject) => {
+      drinks ? resolve(drinks) : reject('Error')
+    })
+  }
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+    setSearchResults('')
+    const data = await fetchData(searchField)
+    const myDrinks = data.drinks && await buildSearchData(data.drinks)
+    setSearchResults(myDrinks)
     setSearchField('')
   }
 
@@ -63,16 +75,14 @@ function App() {
   return (
     <div className="App">
       <header className="main-header">
-        Search Up A Cocktail!
+        Search Up A Cocktail! {alcoholType && `Current alcohol of choice is ${alcoholType}!`}
       </header>
-      <div className="container-header">
-        This app uses <a href="https://www.thecocktaildb.com/api.php">TheCocktailDB</a> to search up data on cocktails. Purely for fun and enjoyment.
-      </div>
       <div className="container">
         <SearchForm 
           submitForm={handleSubmit}
           setSearchField={setSearchField}
           searchField={searchField}
+          setAlcoholType={setAlcoholType}
         />
         <ResultsDisplay 
           select={selectDrink}
@@ -86,7 +96,7 @@ function App() {
         />
       )}
       <div className="main-footer">
-        Kevin Convery - 2020
+        <span>Kevin Convery - 2020 with special help from</span> <a href="https://www.thecocktaildb.com/api.php">TheCocktailDB</a>
       </div>
     </div>
   )
