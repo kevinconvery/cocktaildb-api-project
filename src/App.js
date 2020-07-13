@@ -4,33 +4,58 @@ import ResultsDisplay from './components/ResultsDisplay/ResultsDisplay'
 import SearchForm from './components/SearchForm/SearchForm'
 import './App.css';
 
-function App() {
+const App = () => {
   const [searchField, setSearchField] = useState("")
   const [searchResults, setSearchResults] = useState("")
   const [modalData, setModalData] = useState("")
   const [modalVisible, setModalVisible] = useState(false)
   const [alcoholType, setAlcoholType] = useState("")
 
-  const fetchData = async search => {
-    const endpoint = search && `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${search}`
-    const response = search && await fetch(endpoint)
-    const data = response && await response.json()
-    return new Promise((resolve, reject) => {
-      data ? resolve(data) : reject('Error')
-    })  
+  const fetchData = async (search, alcoholType="") => {
+    let endpoint = `https://www.thecocktaildb.com/api/json/v1/1/`
+    let suffix = alcoholType ? `filter.php?i=${alcoholType}` : `search.php?s=${search}`
+    endpoint += suffix
+    let response, data
+    response = await fetch(endpoint)
+    data = response && await response.json()
+    console.log(`data set: ${data.drinks}`)
+    // if we're filtering by alcohol type, we'll have to do another search
+    if (alcoholType) {
+      const dataSet = await filterDataByAlcoholType(data)
+      console.log(`data set at line 25: ${dataSet}`)
+      return dataSet
+    } else {
+      console.log(`made it here`)
+      console.log(JSON.stringify(data, null, 4))
+      return new Promise((resolve, reject) => {
+        data ? resolve(data) : reject('Error in line 33')
+      })      
+    }
   }
 
-  const buildSearchData = async data => {
-    const drinks = data.map((drink) => {
-      const { strDrink, strInstructions, strGlass, strDrinkThumb } = drink
+  const filterDataByAlcoholType = data => {
+    console.log('inside filter data by alcohol type')
+    const promises = data.drinks.map(async (item) => {
+      const { idDrink } = item
+      const endpointById = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${idDrink}`
+      const responseById = await fetch(endpointById)
+      const fullDataById = responseById && await responseById.json()
+      // getting back the full data here
+      return fullDataById.drinks[0]
+    })
+    return Promise.all(promises)
+  }
+
+  const buildDrinkData = async data => {
+    // console.log(`value of data when building drinks: ${data}`)
+    const drinks = data.drinks.map((drink) => {
+      const { idDrink, strDrink, strInstructions, strGlass, strDrinkThumb } = drink
       const drinkIngredients = []
-      const ingredientPrefix = `strIngredient`
-      const measurePrefix = `strMeasure`
       let ingredientKey
       let measureKey
       for (let i = 1; i <= 15; i++) {
-        ingredientKey = `${ingredientPrefix}${i}`
-        measureKey = `${measurePrefix}${i}`
+        ingredientKey = `strIngredient${i}`
+        measureKey = `strMeasure${i}`
         if (drink[ingredientKey]) {
           drinkIngredients.push({
             name: drink[ingredientKey],
@@ -42,6 +67,7 @@ function App() {
         }
       }
         return {
+          id: idDrink,
           title: strDrink,
           instructions: strInstructions,
           servingGlass: strGlass,
@@ -55,12 +81,20 @@ function App() {
   }
 
   const handleSubmit = async e => {
+    console.log(`---- handleSubmit`)
     e.preventDefault()
     setSearchResults('')
-    const data = await fetchData(searchField)
-    const myDrinks = data.drinks && await buildSearchData(data.drinks)
-    setSearchResults(myDrinks)
-    setSearchField('')
+    const data = await fetchData(searchField, alcoholType)
+    console.log(`data being used in submit: ${JSON.stringify(data, null, 4)}`)
+    if (data.drinks) {
+      const myDrinks = await buildDrinkData(data) 
+      setSearchResults(myDrinks)
+      setSearchField('')
+    } else {
+      const myDrinks = await buildDrinkData({ drinks: data })
+      setSearchResults(myDrinks)
+      setSearchField('')
+    }
   }
 
   const selectDrink = e => {
@@ -68,7 +102,7 @@ function App() {
     const specificDrink = searchResults.filter((drink) => {
       return drink.title === e.target.name
     })
-    setModalData(specificDrink)
+    setModalData(specificDrink[0])
     setModalVisible(true)
   }
 
@@ -91,7 +125,7 @@ function App() {
       </div>
       {(modalData && modalVisible) && (
         <Modal 
-          data={modalData[0]}
+          data={modalData}
           closeModal={() => setModalVisible(false)}
         />
       )}
@@ -102,4 +136,4 @@ function App() {
   )
 }
 
-export default App;
+export default App
