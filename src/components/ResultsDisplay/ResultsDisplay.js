@@ -7,14 +7,18 @@ const ResultsDisplay = props => {
     <div className="search-results">
       <ul>
         {results && results.map(result => (
-          <li className="search-result" key={result.title}>
-            <img src={result.thumbnail} className="drink-image-thumbnail"  alt={result.title} />
-            <button 
-              className="search-result-button"
+          <li 
+            key={result.title}
+          >
+            <button
+              className="search-result"
               onClick={select}
               name={result.title}
             >
-              {result.title}
+              <img src={result.thumbnail} className="drink-image-thumbnail"  alt={result.title} />
+              <div class="search-result-label">
+                {result.title}
+              </div>
             </button>
           </li>
         ))}

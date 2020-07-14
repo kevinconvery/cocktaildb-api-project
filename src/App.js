@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Modal from './components/Modal/Modal'
 import ResultsDisplay from './components/ResultsDisplay/ResultsDisplay'
 import SearchForm from './components/SearchForm/SearchForm'
+import { buildDrinkData, fetchDataByAPIEndpoint, fetchData } from './api-calls'
 import './App.css';
 
 const App = () => {
@@ -11,97 +12,23 @@ const App = () => {
   const [modalVisible, setModalVisible] = useState(false)
   const [alcoholType, setAlcoholType] = useState("")
 
-  const fetchData = async (search, alcoholType="") => {
-    let endpoint = `https://www.thecocktaildb.com/api/json/v1/1/`
-    let suffix = alcoholType ? `filter.php?i=${alcoholType}` : `search.php?s=${search}`
-    endpoint += suffix
-    let response, data
-    response = await fetch(endpoint)
-    data = response && await response.json()
-    console.log(`data set: ${data.drinks}`)
-    // if we're filtering by alcohol type, we'll have to do another search
-    if (alcoholType) {
-      const dataSet = await filterDataByAlcoholType(data)
-      return dataSet
-    } else {
-      return new Promise((resolve, reject) => {
-        data ? resolve(data) : reject('Error')
-      })      
-    }
-  }
-
   const fetchRandomDrink = async e => {
     e.preventDefault()
     setSearchResults('')
-    const data = await fetchRandomDrinkData()
+    const data = await fetchDataByAPIEndpoint(`https://www.thecocktaildb.com/api/json/v1/1/random.php`)
     console.log(`random drink: ${data.drinks[0].strDrink}`)
     const myDrinks = data.drinks ? await buildDrinkData(data) : await buildDrinkData({ drinks: data })
     setSearchResults(myDrinks)
-  }
-
-  const fetchRandomDrinkData = async () => {
-    const endpoint = `https://www.thecocktaildb.com/api/json/v1/1/random.php`
-    const response = await fetch(endpoint)
-    const data = await response.json()
-    return new Promise((resolve, reject) => {
-      data ? resolve(data) : reject(`Error from fetchRandomDrink`)
-    })
-  }
-
-  const filterDataByAlcoholType = data => {
-    const promises = data.drinks.map(async (item) => {
-      const { idDrink } = item
-      const endpointById = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${idDrink}`
-      const responseById = await fetch(endpointById)
-      const fullDataById = responseById && await responseById.json()
-      // getting back the full data here
-      return fullDataById.drinks[0]
-    })
-    return Promise.all(promises)
-  }
-
-  const buildDrinkData = async data => {
-    // console.log(`value of data when building drinks: ${data}`)
-    const drinks = data.drinks.map((drink) => {
-      const { idDrink, strDrink, strInstructions, strGlass, strDrinkThumb } = drink
-      const drinkIngredients = []
-      let ingredientKey
-      let measureKey
-      for (let i = 1; i <= 15; i++) {
-        ingredientKey = `strIngredient${i}`
-        measureKey = `strMeasure${i}`
-        if (drink[ingredientKey]) {
-          drinkIngredients.push({
-            name: drink[ingredientKey],
-            measure: drink[measureKey] ? drink[measureKey] : ''
-          })
-          continue
-        } else {
-          break
-        }
-      }
-        return {
-          id: idDrink,
-          title: strDrink,
-          instructions: strInstructions,
-          servingGlass: strGlass,
-          ingredients: drinkIngredients,
-          thumbnail: strDrinkThumb
-        }
-      })
-    return new Promise((resolve, reject) => {
-      drinks ? resolve(drinks) : reject('Error')
-    })
   }
 
   const handleSubmit = async e => {
     e.preventDefault()
     // reset our search results
     setSearchResults('')
+    setSearchField('')
     const data = await fetchData(searchField, alcoholType)
     const myDrinks = data.drinks ? await buildDrinkData(data) : await buildDrinkData({ drinks: data })
     setSearchResults(myDrinks)
-    setSearchField('')
   }
 
   const selectDrink = e => {
