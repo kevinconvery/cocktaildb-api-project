@@ -3,15 +3,16 @@ import './SearchForm.css'
 
 const SearchForm = props => {
   const { submitForm, searchField, setSearchField, setAlcoholType } = props
+  const alcoholicIngredients = [ 'Gin', 'Rum', 'Whiskey', 'Vodka', 'Tequila', 'Beer', 'Wine' ]
   return (
     <form onSubmit={submitForm} className="cocktail-search-form">
       <div className="form-option">
-        <label htmlFor="search-field" className="search-field-label">
+        <label htmlFor="classic-search-field" className="search-field-label">
           Search for
         </label>
         <input 
           type="text" 
-          className="search-field"
+          className="classic-search-field input-field"
           value={searchField}
           onChange={(e => setSearchField(e.target.value))} 
         />
@@ -20,18 +21,23 @@ const SearchForm = props => {
         <label htmlFor="alcohol-type" className="search-field-label">
           Filter by alcohol type:
         </label>
-        <select name="alcohol-type" onChange={(e => setAlcoholType(e.target.value))}>
+        <select 
+          name="alcohol-type" 
+          onChange={(e => setAlcoholType(e.target.value))}
+          className="alcohol-filter-select input-field"
+        >
           <option value="">Do not filter</option>
-          <option value="Gin">Gin</option>
-          <option value="Rum">Rum</option>
-          <option value="Whiskey">Whiskey</option>
-          <option value="Vodka">Vodka</option>
-          <option value="Tequila">Tequila</option>
-          <option value="Beer">Beer</option>
-          <option value="Wine">Wine</option>
+          {alcoholicIngredients.map(optionValue => (
+            <option value={optionValue}>{optionValue}</option>
+          ))}
         </select>
-        <button type="submit">Submit</button>
-      </div>
+        </div>
+        <button 
+          type="submit"
+          className="search-form-submit-button"
+        >
+          Search Up A Drink
+        </button>
     </form>
   )
 }

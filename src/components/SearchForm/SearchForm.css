@@ -3,15 +3,41 @@
   flex-direction: column;
   justify-content: center;
   align-items: space-between;
-  margin-top: 1rem;
+  margin-top: 3rem;
   margin-left: .5rem;
-  padding: 1rem 1.5rem;
-  max-width: 30vw;
+  padding: 2rem 3rem;
+  max-width: 50vw;
   max-height: 70vh;
   height: 100%;
-  border: 2px solid black;
+  border: 2px solid #100c26;
+  border-radius: 15px;
+  background-color: #6EA4BF;
 }
 
 .cocktail-search-form .search-field-label {
   margin-right: 1rem;
+  font-size: 0.9rem;
+}
+
+.search-form-submit-button {
+  margin-top: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.2rem;
+  padding: 0.5rem 0;
+  width: 80%;
+  border: 2px solid #100c26;
+}
+
+.form-option {
+  margin: .5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.input-field {
+  font-size: 1rem;
+  padding: .2em;
+  border: 2px solid #100c26;
 }

@@ -22,19 +22,15 @@ const App = () => {
     // if we're filtering by alcohol type, we'll have to do another search
     if (alcoholType) {
       const dataSet = await filterDataByAlcoholType(data)
-      console.log(`data set at line 25: ${dataSet}`)
       return dataSet
     } else {
-      console.log(`made it here`)
-      console.log(JSON.stringify(data, null, 4))
       return new Promise((resolve, reject) => {
-        data ? resolve(data) : reject('Error in line 33')
+        data ? resolve(data) : reject('Error')
       })      
     }
   }
 
   const filterDataByAlcoholType = data => {
-    console.log('inside filter data by alcohol type')
     const promises = data.drinks.map(async (item) => {
       const { idDrink } = item
       const endpointById = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${idDrink}`
@@ -81,20 +77,13 @@ const App = () => {
   }
 
   const handleSubmit = async e => {
-    console.log(`---- handleSubmit`)
     e.preventDefault()
+    // reset our search results
     setSearchResults('')
     const data = await fetchData(searchField, alcoholType)
-    console.log(`data being used in submit: ${JSON.stringify(data, null, 4)}`)
-    if (data.drinks) {
-      const myDrinks = await buildDrinkData(data) 
-      setSearchResults(myDrinks)
-      setSearchField('')
-    } else {
-      const myDrinks = await buildDrinkData({ drinks: data })
-      setSearchResults(myDrinks)
-      setSearchField('')
-    }
+    const myDrinks = data.drinks ? await buildDrinkData(data) : await buildDrinkData({ drinks: data })
+    setSearchResults(myDrinks)
+    setSearchField('')
   }
 
   const selectDrink = e => {

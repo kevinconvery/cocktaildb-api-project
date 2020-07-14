@@ -1,6 +1,7 @@
 .drink-image-thumbnail {
   height: 100px;
   width: 100px;
+  border-radius: 20px 0 0 20px;
 }
 
 .search-results {
@@ -13,6 +14,7 @@
 
 .search-results ul {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   list-style: none;
   padding: 0;
@@ -21,21 +23,32 @@
 }
 
 .search-result {
+  background-color: black;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+
   margin-bottom: 1rem;
   margin-right: .5rem;
-  width: 150px;
+  width: 500px;
+  transition: all .5s ease-in-out;
+  border-radius: 20px;
+}
+
+.search-result:hover {
+  border: 2px solid yellow;
+  transform: scale(0.95);
 }
 
 .search-result button {
   margin-top: .5rem;
+  margin-right: 1rem;
   justify-content: center;
   border: none;
   font-family: 'Roboto', sans-serif;
   background-color: #100c26;
   color: white;
-  padding: 5px 10px;
+  padding: 15px 20px;
   border-radius: 10px;
 }
