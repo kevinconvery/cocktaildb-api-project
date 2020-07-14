@@ -2,7 +2,7 @@ import React from 'react'
 import './SearchForm.css'
 
 const SearchForm = props => {
-  const { submitForm, searchField, setSearchField, setAlcoholType } = props
+  const { submitForm, searchField, setSearchField, setAlcoholType, getRandomDrink } = props
   const alcoholicIngredients = [ 'Gin', 'Rum', 'Whiskey', 'Vodka', 'Tequila', 'Beer', 'Wine' ]
   return (
     <form onSubmit={submitForm} className="cocktail-search-form">
@@ -28,16 +28,27 @@ const SearchForm = props => {
         >
           <option value="">Do not filter</option>
           {alcoholicIngredients.map(optionValue => (
-            <option value={optionValue}>{optionValue}</option>
+            <option
+              key={optionValue} 
+              value={optionValue}
+            >
+              {optionValue}
+            </option>
           ))}
         </select>
-        </div>
-        <button 
-          type="submit"
-          className="search-form-submit-button"
-        >
-          Search Up A Drink
-        </button>
+      </div>
+      <button 
+        type="submit"
+        className="btn search-form-submit-button"
+      >
+        Search Up A Drink
+      </button>
+      <button 
+        className="btn get-random-drink-button"
+        onClick={getRandomDrink}
+      >
+        Get a Random Drink
+      </button>
     </form>
   )
 }

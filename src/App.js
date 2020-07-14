@@ -30,6 +30,24 @@ const App = () => {
     }
   }
 
+  const fetchRandomDrink = async e => {
+    e.preventDefault()
+    setSearchResults('')
+    const data = await fetchRandomDrinkData()
+    console.log(`random drink: ${data.drinks[0].strDrink}`)
+    const myDrinks = data.drinks ? await buildDrinkData(data) : await buildDrinkData({ drinks: data })
+    setSearchResults(myDrinks)
+  }
+
+  const fetchRandomDrinkData = async () => {
+    const endpoint = `https://www.thecocktaildb.com/api/json/v1/1/random.php`
+    const response = await fetch(endpoint)
+    const data = await response.json()
+    return new Promise((resolve, reject) => {
+      data ? resolve(data) : reject(`Error from fetchRandomDrink`)
+    })
+  }
+
   const filterDataByAlcoholType = data => {
     const promises = data.drinks.map(async (item) => {
       const { idDrink } = item
@@ -106,6 +124,7 @@ const App = () => {
           setSearchField={setSearchField}
           searchField={searchField}
           setAlcoholType={setAlcoholType}
+          getRandomDrink={fetchRandomDrink}
         />
         <ResultsDisplay 
           select={selectDrink}

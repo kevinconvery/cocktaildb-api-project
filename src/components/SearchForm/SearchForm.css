@@ -14,12 +14,12 @@
   background-color: #6EA4BF;
 }
 
-.cocktail-search-form .search-field-label {
+.search-field-label {
   margin-right: 1rem;
   font-size: 0.9rem;
 }
 
-.search-form-submit-button {
+.btn {
   margin-top: 1rem;
   margin-left: auto;
   margin-right: auto;
@@ -27,6 +27,9 @@
   padding: 0.5rem 0;
   width: 80%;
   border: 2px solid #100c26;
+  background-color: #FFC857;
+  font-weight: 700;
+  border-radius: 10px;
 }
 
 .form-option {
@@ -38,6 +41,6 @@
 
 .input-field {
   font-size: 1rem;
-  padding: .2em;
+  padding: 0.1rem 0.05rem;
   border: 2px solid #100c26;
 }
